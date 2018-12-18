@@ -2,7 +2,8 @@ from selenium import webdriver
 from selenium.common.exceptions import NoSuchElementException, TimeoutException
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as ec
-
+from pages.homepage import HomePage
+from pages.searchpage import SearchPage
 import unittest
 
 
@@ -13,13 +14,13 @@ class TestHomePage(unittest.TestCase):
 
         # hard code Firefox for now
         self.driver = webdriver.Firefox()
-        self.driver.get("http://www.google.com")
+        self.driver.get(HomePage.page_url)
 
     # 1. The Google logo image is present.
     def test_1_google_logo(self):
 
         try:
-            self.driver.find_element_by_id("hplogo")
+            self.driver.find_element(*HomePage.logo)
         except NoSuchElementException:
             self.fail("Google logo not found")
 
@@ -27,7 +28,7 @@ class TestHomePage(unittest.TestCase):
     def test_2_text_field(self):
 
         try:
-            self.driver.find_element_by_name("q")
+            self.driver.find_element(*HomePage.search_text)
         except NoSuchElementException:
             self.fail("Search text field not found")
 
@@ -35,40 +36,37 @@ class TestHomePage(unittest.TestCase):
     def test_3_search_btn(self):
 
         try:
-            self.driver.find_element_by_name("btnK")
+            self.driver.find_element(*HomePage.search_btn)
         except NoSuchElementException:
             self.fail("Google Search button not found")
 
     # 4. Search text may be entered into the Search text field (e.g. ‘True Fit’)
     def test_4_text_field_input(self):
 
-        search_element = self.driver.find_element_by_name("q")
-        search_element.send_keys("True Fit")
-        self.assertTrue(search_element.get_attribute("value") == "True Fit")
+        search_text = self.driver.find_element(*HomePage.search_text)
+        search_text.send_keys("True Fit")
+        self.assertTrue(search_text.get_attribute("value") == "True Fit")
 
     # 5. Clicking the ‘Google Search’ button with search text yields search results.
     def test_5_search_text(self):
 
-        search_element = self.driver.find_element_by_name("q")
-        search_element.send_keys("True Fit")
-        search_element.submit()
-        WebDriverWait(self.driver, 5).until(ec.title_contains("True Fit"))
-
-        self.assertTrue(self.driver.title == 'True Fit - Google Search')
+        search_text = self.driver.find_element(*HomePage.search_text)
+        search_text.send_keys("True Fit")
+        search_text.submit()
+        WebDriverWait(self.driver, 5).until(ec.url_contains(SearchPage.page_url))
+        self.assertTrue(self.driver.title == 'True Fit - '+SearchPage.title_suffix)
 
     # 6. Clicking the ‘Google Search’ button with no search text will not perform a search.
     def test_6_search_no_text(self):
 
-        search_element = self.driver.find_element_by_name("q")
-        # store current page title
-        title_init = self.driver.title
+        search_text = self.driver.find_element(*HomePage.search_text)
         # submit without any search text
-        search_element.submit()
+        search_text.submit()
         try:
-            WebDriverWait(self.driver, 5).until(ec.title_contains("Google Search"))
+            WebDriverWait(self.driver, 5).until(ec.url_contains(SearchPage.page_url))
         except TimeoutException:
-            # Title did not change to "Google Search", check that it stayed the same
-            self.assertTrue(self.driver.title == title_init)
+            # URL did not change, Check that title matches HomePage title
+            self.assertTrue(self.driver.title == HomePage.title)
             return
         self.fail("Google performed a search")
 
