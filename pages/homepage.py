@@ -9,5 +9,6 @@ class HomePage:
     title = "Google"
 
     logo = (By.ID, "hplogo")
-    search_btn = (By.NAME, "btnK")
+    search_btn_static = (By.XPATH, "//div[@class='FPdoLc VlcLAe']//input[@name='btnK']")
+    search_btn_dropdown = (By.XPATH, "//div[@class='UUbT9']//input[@name='btnK']")
     search_text = (By.NAME, "q")

@@ -20,7 +20,8 @@ class TestHomePage(unittest.TestCase):
     def test_1_google_logo(self):
 
         try:
-            self.driver.find_element(*HomePage.logo)
+            google_logo = self.driver.find_element(*HomePage.logo)
+            self.assertTrue(google_logo.is_displayed())
         except NoSuchElementException:
             self.fail("Google logo not found")
 
@@ -28,7 +29,8 @@ class TestHomePage(unittest.TestCase):
     def test_2_text_field(self):
 
         try:
-            self.driver.find_element(*HomePage.search_text)
+            search_text = self.driver.find_element(*HomePage.search_text)
+            self.assertTrue(search_text.is_displayed())
         except NoSuchElementException:
             self.fail("Search text field not found")
 
@@ -36,7 +38,8 @@ class TestHomePage(unittest.TestCase):
     def test_3_search_btn(self):
 
         try:
-            self.driver.find_element(*HomePage.search_btn)
+            search_btn = self.driver.find_element(*HomePage.search_btn_static)
+            self.assertTrue(search_btn.is_displayed())
         except NoSuchElementException:
             self.fail("Google Search button not found")
 
@@ -52,16 +55,33 @@ class TestHomePage(unittest.TestCase):
 
         search_text = self.driver.find_element(*HomePage.search_text)
         search_text.send_keys("True Fit")
-        search_text.submit()
+
+        search_btn = self.driver.find_element(*HomePage.search_btn_static)
+        search_btn.click()
+
+        # wait for search page url
         WebDriverWait(self.driver, 5).until(ec.url_contains(SearchPage.page_url))
+
+        # assert search page title
         self.assertTrue(self.driver.title == 'True Fit - '+SearchPage.title_suffix)
+
+        # assert search results elements exists
+        # check size of array since find_elements does not throw exception when no results are found
+        search_results = self.driver.find_elements(*SearchPage.search_results)
+        self.assertTrue(len(search_results) > 0)
 
     # 6. Clicking the ‘Google Search’ button with no search text will not perform a search.
     def test_6_search_no_text(self):
 
+        search_btn = self.driver.find_element(*HomePage.search_btn_static)
         search_text = self.driver.find_element(*HomePage.search_text)
+
+        # verify search text is empty
+        self.assertTrue(search_text.get_attribute("value") == "")
+
         # submit without any search text
-        search_text.submit()
+        search_btn.click()
+
         try:
             WebDriverWait(self.driver, 5).until(ec.url_contains(SearchPage.page_url))
         except TimeoutException:
