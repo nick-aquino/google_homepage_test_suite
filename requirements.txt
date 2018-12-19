@@ -1,4 +1,4 @@
-git+git+https://github.com/JamesMTSloan/HtmlTestRunner
+git+https://github.com/JamesMTSloan/HtmlTestRunner
 Jinja2==2.9.5
 MarkupSafe==1.1.0
 selenium==3.141.0
