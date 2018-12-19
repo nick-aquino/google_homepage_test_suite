@@ -1,19 +1,19 @@
-from selenium import webdriver
 from selenium.common.exceptions import NoSuchElementException, TimeoutException
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as ec
 from pages.homepage import HomePage
 from pages.searchpage import SearchPage
 import unittest
+from tools.driverhelper import DriverHelper
 
 
-class TestHomePage(unittest.TestCase):
+class TestHomePage(unittest.TestCase, DriverHelper):
 
     # Sets up environment before each test
     def setUp(self):
 
-        # hard code Firefox for now
-        self.driver = webdriver.Firefox()
+        # gets driver class from DriverHelper then instantiates
+        self.driver = DriverHelper.get_driver(self)()
         self.driver.get(HomePage.page_url)
 
     # 1. The Google logo image is present.
@@ -92,8 +92,3 @@ class TestHomePage(unittest.TestCase):
 
     def tearDown(self):
             self.driver.quit()
-
-
-if __name__ == '__main__':
-    suite = unittest.TestLoader().loadTestsFromTestCase(TestHomePage)
-    unittest.TextTestRunner(verbosity=2).run(suite)
