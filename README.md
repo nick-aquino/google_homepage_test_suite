@@ -5,7 +5,7 @@ The included test suite will execute some tests on Google's homepage.
 
 ## Table of Content
 
-- [Intallation](#installation)
+- [Installation](#installation)
 - [Usage](#usage)
 - [Reporting](#reporting)
 
