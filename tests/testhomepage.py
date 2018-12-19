@@ -47,14 +47,14 @@ class TestHomePageCases:
             except NoSuchElementException:
                 self.fail("Google Search button not found")
 
-        # 4. Search text may be entered into the Search text field (e.g. ‘True Fit’)
+        # 4. Search text may be entered into the Search text field (e.g. 'True Fit')
         def test_4_text_field_input(self):
 
             search_text = self.driver.find_element(*HomePage.search_text)
             search_text.send_keys("True Fit")
             self.assertTrue(search_text.get_attribute("value") == "True Fit")
 
-        # 5. Clicking the ‘Google Search’ button with search text yields search results.
+        # 5. Clicking the 'Google Search' button with search text yields search results.
         def test_5_search_text(self):
 
             search_text = self.driver.find_element(*HomePage.search_text)
@@ -74,7 +74,7 @@ class TestHomePageCases:
             search_results = self.driver.find_elements(*SearchPage.search_results)
             self.assertTrue(len(search_results) > 0)
 
-        # 6. Clicking the ‘Google Search’ button with no search text will not perform a search.
+        # 6. Clicking the 'Google Search' button with no search text will not perform a search.
         def test_6_search_no_text(self):
 
             search_btn = self.driver.find_element(*HomePage.search_btn_static)
