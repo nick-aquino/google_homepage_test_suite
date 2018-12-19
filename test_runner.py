@@ -1,25 +1,24 @@
-import unittest
+import unittest.suite
 import sys
-from tools.driverhelper import DriverHelper
-
-
-def run_tests():
-    # runs tests on all modules in tests folder
-    suite = unittest.TestLoader().discover("tests")
-    unittest.TextTestRunner(verbosity=2).run(suite)
+from tests import testhomepage
+import HtmlTestRunner
 
 
 if __name__ == '__main__':
+
     if len(sys.argv) > 1:
-        if sys.argv[1] == 'all':
-            # loops through and tests on all supported browsers in DriverHelper
-            for browser in DriverHelper.drivers.keys():
-                DriverHelper.current_browser = browser
-                run_tests()
+        if sys.argv[1] == 'chrome':
+            # runs on chrome
+            suite = unittest.TestLoader().loadTestsFromTestCase(testhomepage.TestHomePageChrome)
+        elif sys.argv[1] == 'firefox':
+            # runs on firefox
+            suite = unittest.TestLoader().loadTestsFromTestCase(testhomepage.TestHomePageFirefox)
         else:
-            # runs tests on argument specified browser
-            DriverHelper.current_browser = sys.argv[1]
-            run_tests()
+            print(sys.argv[1], "is not a supported driver")
+            sys.exit()
     else:
-        # uses default browser for tests (currently defined as firefox in DriverHelper)
-        run_tests()
+        # runs on all drivers
+        suite = unittest.TestLoader().loadTestsFromModule(testhomepage)
+
+    # using JamesMTSloan branch of HTMLTestRunner to combine reports and show traceback
+    HtmlTestRunner.HTMLTestRunner(combine_reports="True").run(suite)
