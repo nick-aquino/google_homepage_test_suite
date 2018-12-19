@@ -60,7 +60,11 @@ class TestHomePageCases:
             search_text = self.driver.find_element(*HomePage.search_text)
             search_text.send_keys("True Fit")
 
-            search_btn = self.driver.find_element(*HomePage.search_btn_static)
+            # Using locator for 'Google Search' button that appears in predictive text dropdown
+            search_btn = self.driver.find_element(*HomePage.search_btn_dropdown)
+
+            # Wait for button to appear then click
+            WebDriverWait(self.driver, 5).until(ec.visibility_of(search_btn))
             search_btn.click()
 
             # wait for search page url
