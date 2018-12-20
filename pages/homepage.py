@@ -8,7 +8,24 @@ class HomePage:
     page_url = "https://www.google.com/"
     title = "Google"
 
-    logo = (By.ID, "hplogo")
-    search_btn_static = (By.XPATH, "//div[@class='FPdoLc VlcLAe']//input[@name='btnK']")
-    search_btn_dropdown = (By.XPATH, "//div[@class='UUbT9']//input[@name='btnK']")
-    search_text = (By.NAME, "q")
+    # Elements by, value, and name
+    logo = {
+        "by": By.ID,
+        "value": "hplogo",
+        "name": "Google Logo"
+    }
+    search_btn_static = {
+        "by": By.XPATH,
+        "value": "//div[@class='FPdoLc VlcLAe']//input[@name='btnK']",
+        "name": "Google Search Button Static"
+    }
+    search_btn_dropdown = {
+        "by": By.XPATH,
+        "value": "//div[@class='UUbT9']//input[@name='btnK']",
+        "name": "Google Search Button Dropdown"
+    }
+    search_text = {
+        "by": By.NAME,
+        "value": "q",
+        "name": "Search Text Box"
+    }

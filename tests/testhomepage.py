@@ -1,20 +1,20 @@
 from selenium import webdriver
-from selenium.common.exceptions import NoSuchElementException, TimeoutException
+from tools.testhelper import TestHelper
+from selenium.common.exceptions import TimeoutException
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as ec
 from pages.homepage import HomePage
 from pages.searchpage import SearchPage
-import unittest
 
 
 class TestHomePageCases:
 
-    class TestHomePage(unittest.TestCase):
+    class TestHomePage(TestHelper):
 
         # Defaulting to Firefox
         driverclass = webdriver.Firefox
 
-        # Sets up environment before each test
+        # Sets up clean environment before each test
         def setUp(self):
 
             self.driver = self.driverclass()
@@ -23,45 +23,32 @@ class TestHomePageCases:
         # 1. The Google logo image is present.
         def test_1_google_logo(self):
 
-            try:
-                google_logo = self.driver.find_element(*HomePage.logo)
-                self.assertTrue(google_logo.is_displayed())
-            except NoSuchElementException:
-                self.fail("Google logo not found")
+            self.check_element_present(**HomePage.logo)
 
         # 2. The Search text field is present.
         def test_2_text_field(self):
 
-            try:
-                search_text = self.driver.find_element(*HomePage.search_text)
-                self.assertTrue(search_text.is_displayed())
-            except NoSuchElementException:
-                self.fail("Search text field not found")
+            self.check_element_present(**HomePage.search_text)
 
         # 3. The Google Search button is present.
         def test_3_search_btn(self):
 
-            try:
-                search_btn = self.driver.find_element(*HomePage.search_btn_static)
-                self.assertTrue(search_btn.is_displayed())
-            except NoSuchElementException:
-                self.fail("Google Search button not found")
+            self.check_element_present(**HomePage.search_btn_static)
 
         # 4. Search text may be entered into the Search text field (e.g. 'True Fit')
         def test_4_text_field_input(self):
 
-            search_text = self.driver.find_element(*HomePage.search_text)
-            search_text.send_keys("True Fit")
-            self.assertTrue(search_text.get_attribute("value") == "True Fit")
+            search_text = self.find_element(**HomePage.search_text)
+            self.send_keys_to_element(search_text, "True Fit")
 
         # 5. Clicking the 'Google Search' button with search text yields search results.
         def test_5_search_text(self):
 
-            search_text = self.driver.find_element(*HomePage.search_text)
-            search_text.send_keys("True Fit")
+            search_text = self.find_element(**HomePage.search_text)
+            self.send_keys_to_element(search_text, "True Fit")
 
             # Using locator for 'Google Search' button that appears in predictive text dropdown
-            search_btn = self.driver.find_element(*HomePage.search_btn_dropdown)
+            search_btn = self.find_element(**HomePage.search_btn_dropdown)
 
             # Wait for button to appear then click
             WebDriverWait(self.driver, 5).until(ec.visibility_of(search_btn))
@@ -73,16 +60,14 @@ class TestHomePageCases:
             # assert search page title
             self.assertTrue(self.driver.title == 'True Fit - '+SearchPage.title_suffix)
 
-            # assert search results elements exists
-            # check size of array since find_elements does not throw exception when no results are found
-            search_results = self.driver.find_elements(*SearchPage.search_results)
-            self.assertTrue(len(search_results) > 0)
+            # helper method for verifying element list is not empty
+            self.find_element_list(**SearchPage.search_results)
 
         # 6. Clicking the 'Google Search' button with no search text will not perform a search.
         def test_6_search_no_text(self):
 
-            search_btn = self.driver.find_element(*HomePage.search_btn_static)
-            search_text = self.driver.find_element(*HomePage.search_text)
+            search_btn = self.find_element(**HomePage.search_btn_static)
+            search_text = self.find_element(**HomePage.search_text)
 
             # verify search text is empty
             self.assertTrue(search_text.get_attribute("value") == "")
