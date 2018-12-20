@@ -1,8 +1,11 @@
 from selenium.common.exceptions import NoSuchElementException
+from selenium.webdriver.remote.webdriver import WebDriver
 import unittest
 
 
 class TestHelper(unittest.TestCase):
+
+    driver: WebDriver
 
     # uses internal find element and checks that element is displayed
     def check_element_present(self, by, value, name):
