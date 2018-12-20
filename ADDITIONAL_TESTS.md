@@ -2,15 +2,6 @@
 
 Examples of additional test cases that could be run on the Google Homepage.
 
-## Table of Content
-
-- [Search Submission](#search_submission)
-- [Predicted Search Text](#predicted_search_text)
-- [Special Results](#specia_results)
-- [Search Text Limitations](#search_text_limitations)
-- [Miscellaneous](#miscellaneous)
-
-
 ### Search Submission
 
 1. **Use Enter Key**
