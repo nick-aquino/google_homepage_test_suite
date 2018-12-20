@@ -1,13 +1,23 @@
 # google_homepage_test_suite
 
-This repository is a Framework using Python 3 and Selenium for testing webpages. 
+This repository is a Testing Framework using Python 3.6 and Selenium for testing webpages. 
 The included test suite will execute some tests on Google's homepage.
 
 ## Table of Content
 
+- [Requirements](#requirements)
 - [Installation](#installation)
 - [Usage](#usage)
 - [Reporting](#reporting)
+
+
+## Requirements
+
+- Python 3.6
+- pip
+- Webdrivers for Chrome and Firefox (Added to PATH)
+    - Firefox: https://github.com/mozilla/geckodriver/releases
+    - Chrome: https://sites.google.com/a/chromium.org/chromedriver/downloads
 
 ## Installation
 
@@ -19,12 +29,6 @@ To install google_homepage_test_suite:
 ```batch
     $ pip install -r requirements.txt
 ```
-
-3. Download and add the Selenium webdrivers to your PATH
-
-The following are supported:
-- Firefox: https://github.com/mozilla/geckodriver/releases
-- Chrome: https://sites.google.com/a/chromium.org/chromedriver/downloads
 
 ## Usage
 
